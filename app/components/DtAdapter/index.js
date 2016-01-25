@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import DataTable from 'datatables.net';
 import scroller from 'datatables.net-scroller';
+import colreorder from 'datatables.net-colreorder';
 
 $.fn.DataTable = DataTable;
 
@@ -22,12 +23,16 @@ class DtAdapter extends React.Component {
   initializeTable() {
     try {
       this.dtInstance = $(this.dtTable).DataTable({
-        dom:'t',
+        dom: 't',
         data: this.props.data,
-        columnDefs: this.props.columns,
-        scrollY: 900,
+        columns: this.props.columns,
+        scrollY: 800,
+        scrollX: true,
         deferRender: true,
-        scroller: true
+        scroller: {
+          displayBuffer: 3
+        },
+        colReorder: true
       });
     } catch (e) {
       console.log('There was an error initializing the table');

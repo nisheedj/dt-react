@@ -7,33 +7,32 @@ import {
 }
 from './components/DtAdapter';
 
-import dataSet from './sample-data/sample-1.js';
+let data = [];
 
-let dataDefs = dataSet.defaultData.items;
+let cols = [];
 
-let colDefs = [{
-  "title": "Base Measures ID",
-  "targets": 0
-}, {
-  "title": "Division Name",
-  "targets": 1
-}, {
-  "title": "Quarter Name",
-  "targets": 2
-}, {
-  "title": "State Name",
-  "targets": 3
-}, {
-  "title": "Base Price",
-  "targets": 4
-}, {
-  "title": "Price Final",
-  "targets": 5
-}];
+for (var i = 0; i < 30; i++) {
+  cols.push({
+    title: 'Header ' + (i + 1),
+    targets: i,
+    width: 200
+  });
+};
+
+for (var i = 0; i < 10000; i++) {
+  data[i] = [];
+  for (var j = 0; j < cols.length; j++) {
+    if(j === 0){
+      data[i][j] = i + 1;
+    } else {
+      data[i][j] = 'Text Header' + (j + 1);
+    }
+  };
+};
 
 class App extends React.Component {
   render() {
-    return <div className="dt-app"><DtAdapter columns={colDefs} data={dataDefs}/></div>
+    return <div className="dt-app"><DtAdapter columns={cols} data={data}/></div>
   }
 }
 
