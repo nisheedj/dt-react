@@ -24,7 +24,7 @@ HeaderCell.defaultProps = {
 };
 
 
-for (var i = 0; i < 30; i++) {
+for (var i = 0; i < 40; i++) {
   if (i === 0) {
     cols.push({
       targets: i,

@@ -4,6 +4,7 @@ import $ from 'jquery';
 import DataTable from 'datatables.net';
 import scroller from 'datatables.net-scroller';
 import colreorder from 'datatables.net-colreorder';
+import fixedcolumns from 'datatables.net-fixedcolumns';
 
 $.fn.DataTable = DataTable;
 
@@ -65,6 +66,7 @@ class DtAdapter extends React.Component {
         },
         colReorder: true,
         ordering: false,
+        fixedColumns: false,
         //Callbacks
         headerCallback: this.headerCallback
       });
