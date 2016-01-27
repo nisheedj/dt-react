@@ -15,14 +15,45 @@ class DtAdapter extends React.Component {
   }
   createBaseTable() {
     this.dtTable = document.createElement('table');
+    let thead = document.createElement('thead');
+    let theadRow = document.createElement('tr');
+
     this.dtTable.setAttribute('colspacing', '0');
     this.dtTable.setAttribute('width', '100%');
     this.dtTable.className = 'dt-table';
+
+    this.createTableHeaders(theadRow);
+    thead.appendChild(theadRow);
+    this.dtTable.appendChild(thead);
     ReactDOM.findDOMNode(this).appendChild(this.dtTable);
+  }
+  createTableHeaders(theadRow) {
+    for (let i = 0; i < this.props.columns.length; i++) {
+      let th = document.createElement('th');
+      let col = this.props.columns[i];
+      if (col.headerTemplate && typeof col.headerTemplate === 'function') {
+        col.headerTemplate.apply(this, [th, col]);
+      } else {
+        th.textContent = col.title || 'No Title!';
+      }
+      theadRow.appendChild(th);
+    };
+  }
+  cleanUpDOM() {
+    //Cleanup
+    this.dtTable = null;
+    let adapterNode = ReactDOM.findDOMNode(this);
+    while (adapterNode.firstChild) {
+      adapterNode.removeChild(adapterNode.firstChild);
+    };
+  }
+  headerCallback(thead, data, start, end, display) {
+    // Header callback
   }
   initializeTable() {
     try {
       this.dtInstance = $(this.dtTable).DataTable({
+        //Options
         dom: 't',
         data: this.props.data,
         columns: this.props.columns,
@@ -32,14 +63,15 @@ class DtAdapter extends React.Component {
         scroller: {
           displayBuffer: 3
         },
-        colReorder: true
+        colReorder: true,
+        ordering: false,
+        //Callbacks
+        headerCallback: this.headerCallback
       });
     } catch (e) {
       console.log('There was an error initializing the table');
       console.log(e);
-      //Cleanup
-      ReactDOM.findDOMNode(this).removeChild(this.dtTable);
-      this.dtTable = null;
+      this.cleanUpDOM();
     }
   }
   componentWillReceiveProps(nextProps) {
